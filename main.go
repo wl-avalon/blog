@@ -1,16 +1,14 @@
 package main
 
 import (
-	_ "net/http/pprof"
+	"github.com/gin-gonic/gin"
+	"blog/controllers/outer/commit"
 )
 
-//func main() {
-//	go func() {
-//		http.ListenAndServe("localhost:6060", nil)
-//	}()
-//	go_framework.Run()
-//}
-
 func main(){
-	
+	router := gin.Default()
+	router.POST("/blog/outer/commit/addArticle", commit.AddArticle)
+	router.POST("/blog/outer/commit/addMainCategory", commit.AddMainCategory)
+	router.POST("/blog/outer/commit/addSubCategory", commit.AddSubCategory)
+	router.Run(":8000")
 }
