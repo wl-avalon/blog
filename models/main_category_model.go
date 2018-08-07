@@ -6,7 +6,12 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 )
 
+const mainCategoryTableName="main_category"
 var mainCategoryDB *sql.DB
+type MainCategoryRecord struct {
+	Uuid string `json:"uuid" form:"uuid"`
+	Title string `json:"title" form:"title"`
+}
 
 func init(){
 	var err error
@@ -22,7 +27,7 @@ func init(){
 }
 
 func InsertOneMainCategoryRecord(uuid string, title string, createTime string) (int64, error) {
-	rs, err := mainCategoryDB.Exec("INSERT INTO main_category(uuid, title, create_time) VALUES (?, ?, ?)", uuid, title, createTime)
+	rs, err := mainCategoryDB.Exec("INSERT INTO " + mainCategoryTableName + "(uuid, title, create_time) VALUES (?, ?, ?)", uuid, title, createTime)
 	if err != nil {
 		return -1, err
 	}
@@ -31,4 +36,23 @@ func InsertOneMainCategoryRecord(uuid string, title string, createTime string) (
 		return -1, err
 	}
 	return id, nil
+}
+
+func QueryAllMainCategoryRecordList() ([]MainCategoryRecord, error) {
+	rows, err := mainCategoryDB.Query("SELECT uuid, title FROM " + mainCategoryTableName + " ORDER BY id")
+	if err != nil {
+		return nil, err
+	}
+
+	recordList := make([]MainCategoryRecord, 0)
+	for rows.Next() {
+		var mainCategoryRecord MainCategoryRecord
+		rows.Scan(&mainCategoryRecord.Uuid, &mainCategoryRecord.Title)
+		recordList = append(recordList, mainCategoryRecord)
+	}
+
+	if err = rows.Err(); err != nil {
+		return nil, err
+	}
+	return recordList, nil
 }

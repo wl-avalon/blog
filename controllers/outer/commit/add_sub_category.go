@@ -24,7 +24,7 @@ func AddSubCategory(c *gin.Context){
 		response := httpResponse{
 			Error: errorStructure{
 				ReturnCode: 1,
-				ReturnMessage: "插入数据库失败",
+				ReturnMessage: "插入数据库失败," + err.Error(),
 				ReturnUserMessage: "插入数据库失败",
 			},
 			Data: map[string]interface{}{},
