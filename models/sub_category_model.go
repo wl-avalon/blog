@@ -22,6 +22,7 @@ func init(){
 	}
 	subCategoryDB.SetMaxIdleConns(20)
 	subCategoryDB.SetMaxOpenConns(20)
+	subCategoryDB.SetConnMaxLifetime(0)
 	if err := subCategoryDB.Ping(); err != nil{
 		log.Fatalln(err)
 	}

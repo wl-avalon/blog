@@ -21,6 +21,7 @@ func init(){
 	}
 	mainCategoryDB.SetMaxIdleConns(20)
 	mainCategoryDB.SetMaxOpenConns(20)
+	mainCategoryDB.SetConnMaxLifetime(0)
 	if err := mainCategoryDB.Ping(); err != nil{
 		log.Fatalln(err)
 	}

@@ -13,8 +13,9 @@ import (
 func AddArticle(c *gin.Context){
 	mainUuid := c.DefaultPostForm("mainUuid", "-1")
 	subUuid := c.DefaultPostForm("subUuid", "-1")
+	title := c.DefaultPostForm("title", "")
 	content := c.DefaultPostForm("content", "")
-	if mainUuid == "-1" || subUuid == "-1" || content == "" {
+	if mainUuid == "-1" || subUuid == "-1" || content == "" || title == "" {
 		response := httpResponse{
 			Error: errorStructure{
 				ReturnCode: 1,
@@ -32,7 +33,7 @@ func AddArticle(c *gin.Context){
 	}
 	createTime := time.Now().Format("2006-01-02 15:04:05")
 
-	lastID, err := models.InsertOneArticleDetailRecord(uuid, mainUuid, subUuid, content,createTime)
+	lastID, err := models.InsertOneArticleDetailRecord(uuid, mainUuid, subUuid, title, content,createTime)
 	if err != nil {
 		response := httpResponse{
 			Error: errorStructure{

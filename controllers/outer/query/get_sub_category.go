@@ -7,8 +7,8 @@ import (
 )
 
 func GetSubCategoryList(c *gin.Context){
-	mainUuid := c.DefaultQuery("mainUuid", "0")
-	if mainUuid == "0"{
+	mainUuid := c.DefaultQuery("mainUuid", "")
+	if mainUuid == ""{
 		response := httpResponse{
 			Error: errorStructure{
 				ReturnCode: 0,

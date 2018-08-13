@@ -6,19 +6,10 @@ import (
 	"net/http"
 )
 
-type errorStructure struct{
-	ReturnCode int `json:"returnCode"`
-	ReturnMessage string `json:"returnMessage"`
-	ReturnUserMessage string `json:"returnUserMessage"`
-}
+func GetArticleDetail(c *gin.Context){
+	articleUuid := c.DefaultQuery("articleUuid", "")
 
-type httpResponse struct {
-	Error errorStructure `json:"error"`
-	Data interface{} `json:"data"`
-}
-
-func GetMainCategoryList(c *gin.Context){
-	mainCategoryRecordList, err := models.QueryAllMainCategoryRecordList()
+	articleDetail, err := models.QueryArticleDetail(articleUuid)
 	if err != nil {
 		response := httpResponse{
 			Error: errorStructure{
@@ -38,7 +29,7 @@ func GetMainCategoryList(c *gin.Context){
 			ReturnMessage: "成功",
 			ReturnUserMessage: "成功",
 		},
-		Data: mainCategoryRecordList,
+		Data: articleDetail,
 	}
 	c.JSON(http.StatusOK, response)
 }
