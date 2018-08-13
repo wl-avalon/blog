@@ -1,0 +1,9 @@
+package: blog
+import:
+- package: github.com/gin-gonic/gin
+  version: v1.2
+- package: github.com/go-sql-driver/mysql
+  version: v1.4.0
+- package: golang.org/x/net
+  repo: https://go.googlesource.com/net
+  vcs: git
