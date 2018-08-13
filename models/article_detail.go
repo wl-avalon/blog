@@ -3,6 +3,7 @@ package models
 import (
 	"database/sql"
 	"log"
+	"time"
 )
 
 const articleDetailTableName="article_detail"
@@ -10,7 +11,8 @@ var articleDetailDB *sql.DB
 type ArticleSummary struct {
 	Uuid string `json:"uuid" form:"uuid"`
 	Title string `json:"title" form:"title"`
-	CreateTime string `json:"createTime" form:"create_time"`
+	CreateTimeISO string `form:"create_time"`
+	CreateTimeNormal string `json:"createTime"`
 	BrowserCount string `json:"browserCount" form:"browser_count"`
 }
 type ArticleContent struct {
@@ -70,7 +72,9 @@ func QueryArticleSummaryListByCategoryUuid(mainUuid string, subUuid string, page
 	recordList := make([]ArticleSummary, 0)
 	for rows.Next() {
 		var articleSummary ArticleSummary
-		rows.Scan(&articleSummary.Uuid, &articleSummary.Title, &articleSummary.BrowserCount, &articleSummary.CreateTime)
+		rows.Scan(&articleSummary.Uuid, &articleSummary.Title, &articleSummary.BrowserCount, &articleSummary.CreateTimeISO)
+		unix, _ := time.Parse("2006-01-02T15:04:05Z", articleSummary.CreateTimeISO)
+		articleSummary.CreateTimeNormal = unix.Format("2006年01月02日")
 		recordList = append(recordList, articleSummary)
 	}
 
